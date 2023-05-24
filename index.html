@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forecastio.com</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/fontawesome.min.css">
+    <script src="https://kit.fontawesome.com/a84fd5c4f1.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="./imgs/weather-app-fav.png" type="image/x-icon">
+</head>
+<body>
+    <div class="card">
+        <div class="search">
+            <input type="text" placeholder="Enter Your City" name="" id="" spellcheck="false">
+            <button>
+                <img src="./imgs/icons8-search-40.png" alt="">
+            </button>
+            <div class="error">
+                <p>Invalid City Name</p>
+            </div>
+        </div>
+        <div class="weather">
+            <!-- <i class="fa-duotone fa-raindrops" ></i> -->
+            <img src="./imgs/rain.png" class="weather-icon" alt="">
+            <h1 class="temp">22°C</h1>
+            <h2 class="city">London</h2>
+            <div class="details">
+                <div class="col hm">
+                    <img src="./imgs/humidity.png" alt="">
+                    <div>
+                        <p class="humidity">50%</p>
+                        <p>Humidity</p>
+                    </div>
+                </div>
+            </div>
+                <div class="col wd">
+                    <img src="./imgs/wind.png" alt="">
+                    <div>
+                        <p class="wind">15 km/h</p>
+                        <p>Wind Speed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</body>
+
+            <!-- ============== JavaScript Start here=============== -->
+
+    
+<script>
+    const searchInput = document.querySelector('.search input')
+    const searchBtn = document.querySelector('.search button')
+    const img = document.querySelector('.weather-icon')
+
+
+    async function getWeather(city){
+        var res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=d763f8c6939a35d75073cda6ab29b38b&&units=metric`)
+        var data = await res.json();
+
+       // if (res.status == 404){
+         //   document.querySelector('error').style.display = "block";
+        //}
+        //else{
+            //document.querySelector('error').style.display = "none";
+
+      //  }
+        console.log(data)
+        document.querySelector('.temp').innerHTML=Math.round(data.main.temp) + "°C";
+        document.querySelector('.city').innerHTML=data.name ;
+        document.querySelector('.humidity').innerHTML=Math.round(data.main.humidity) + "%";
+        document.querySelector('.wind').innerHTML=Math.round(data.wind.speed) + "km/h";
+
+
+       if (data.weather[0].main == "Clouds"){
+        img.src = "./imgs/clouds.png"
+       } else if (data.weather[0].main == "Clear"){
+        img.src = "./imgs/clear.png"
+       } else if (data.weather[0].main == "Rain"){
+        img.src = "./imgs/rain.png"
+       }else if (data.weather[0].main == "Drizzle"){
+        img.src = "./imgs/drizzle.png"
+
+       }else if (data.weather[0].main == "Mist")
+       img.src = "./imgs/mist.png"
+
+
+       
+    }
+    
+    //getWeather()
+    searchBtn.addEventListener('click',()=>{
+        getWeather(searchInput.value);
+        
+    }) 
+    
+    //document.querySelectorAll(".weather").style.display="block"
+</script>
+</html>
